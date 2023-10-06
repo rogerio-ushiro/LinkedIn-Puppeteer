@@ -15,10 +15,8 @@ const matchFound = [];
 const queue = [];
 var index = 0;
 
-async function run() {
-  const browser = await puppeteer.launch({
-    headless: false,
-  });
+const run = async () => {
+  const browser = await puppeteer.launch({ headless: false });
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 800 });
@@ -29,10 +27,9 @@ async function run() {
   console.log(jobVacancyList.length);
 
   setInterval(() => {
-    try {
-      getData(index, page);
-      queue[index]();
-    } catch (e) { }
+    getData(index, page);
+    if (typeof queue[index]() === 'function')
+      queue[index]()
   }, 3000);
 }
 
