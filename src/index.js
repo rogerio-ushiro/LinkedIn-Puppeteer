@@ -1,5 +1,6 @@
 import puppeteer from "puppeteer";
 import isValid from "./resources/isValid";
+import data from './data.json';
 import {
   getDescriptionBlock,
   getLastBlock,
@@ -9,54 +10,53 @@ import {
   write,
 } from "./resources/func";
 
-const mustHave = [];
-const mustNotHave = [];
-
-const items = [];
+let jobVacancyList = [];
+const matchFound = [];
 const queue = [];
 var index = 0;
-const timer = setInterval(() => {
-  try {
-    queue[index++]();
-  } catch (e) {
-    clearInterval(timer);
-  }
-}, 3000);
 
-(async () => {
+async function run() {
   const browser = await puppeteer.launch({
     headless: false,
   });
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 800 });
+  await page.goto(`${data.url}?keywords=${data.keywords}&location=${data.location}&refresh=true`);
+  await page.waitForSelector('.jobs-search__results-list');
 
-  await page.goto(
-    "https://www.linkedin.com/jobs/search/?keywords=Fullstack&location=germany&refresh=true"
-  );
+  jobVacancyList = await page.$$('.jobs-search__results-list > li');
+  console.log(jobVacancyList.length);
 
-  for (let index = 0; index < 200; index++) {
-    queue.push(async () => {
-      var result = {};
-      const divs = await page.$$(".base-card__full-link");
-      const div = divs[index];
+  setInterval(() => {
+    try {
+      getData(index, page);
+      queue[index]();
+    } catch (e) { }
+  }, 3000);
+}
 
-      await div.click();
+const getData = async (i, page) => {
+  queue.push(async () => {
+    jobVacancyList = await page.$$('.jobs-search__results-list > li');
+    var result = {};
+    await jobVacancyList[i].click();
+    await page.waitForSelector(".top-card-layout__entity-info");
 
-      await page.waitForSelector(".top-card-layout__entity-info");
+    result = await getTitleInfoBlock(page, result);
+    result = await getLink(page, result);
+    result = await getLastBlock(page, result);
+    result = await getDescriptionBlock(page, result);
+    result = await getKeywords(result);
 
-      result = await getTitleInfoBlock(page, result);
-      result = await getLink(page, result);
-      result = await getLastBlock(page, result);
-      result = await getDescriptionBlock(page, result);
-      result = await getKeywords(result);
+    if (isValid(result, data.mustHave, data.mustNotHave)) {
+      matchFound.push(result);
+      write(matchFound);
+    } else {
+      console.log(`${i++} - ${matchFound.length} items`);
+    }
 
-      if (isValid(result, mustHave, mustNotHave)) {
-        items.push(result);
-        write(items);
-      } else {
-        console.log(`${index} - ${items.length} items`);
-      }
-    });
-  }
-})();
+  })
+}
+
+run();

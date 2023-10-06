@@ -1,109 +1,17 @@
-const keywords = [
-  "node",
-  "java",
-  "Ruby on Rails",
-  "J2EE",
-  "EJB",
-  "JPA",
-  "servlet",
-  "spring",
-  "maven",
-  "junit",
-  "es6",
-  "typescript",
-  "javaScript",
-  "amazon",
-  "PHP",
-  "Laravel",
-  "Drupal",
-  "Symfony",
-  "Cloud",
-  "AWS",
-  "Heroku",
-  "azure",
-  "gcp",
-  "tdd",
-  "unit testing",
-  "Cypress",
-  "redux",
-  "react",
-  "angular",
-  "vue.js",
-  "struts",
-  "kotlin",
-  "database",
-  "mongodb",
-  "sql",
-  "mysql",
-  "nosql",
-  "postgresql",
-  "jquery",
-  "HTML",
-  "CSS",
-  "SASS",
-  "cd/ci",
-  "ci/cd",
-  "cicd",
-  "DevOps",
-  "terraform",
-  "ElasticSearch",
-  "jest",
-  "jasmine",
-  "solid",
-  "Clean code",
-  "scrum",
-  "agile",
-  "bootstrap",
-  "git",
-  "webpack",
-  "SSG",
-  "babel",
-  "grunt",
-  "npm",
-  "google",
-  "firebase",
-  "rest",
-  "soap",
-  "c#",
-  "python",
-  "C++",
-  "mobile",
-  "android",
-  "ios",
-  ".net",
-  "dotnet",
-  "MariaDB",
-  "dynamodb",
-  "Graphql",
-  "redis",
-  "Microservice",
-  "nest",
-  "docker",
-  "kubernetes",
-  "OOP",
-  "linux",
-];
+import data from '../data.json';
+console.log(data);
 
 const sortTimeago = require("./sort-timeago");
-import fs from "fs";
 import { createPDF } from "./create-pdf";
 
 const write = (items) => {
   createPDF(sortTimeago(items));
-  // fs.writeFile(
-  //   "./repository/vagas.json",
-  //   JSON.stringify(sortTimeago(items)),
-  //   (err) => {
-  //     if (err) throw err;
-  //     console.log("Saved!");
-  //   }
-  // );
 };
 
 const getKeywords = (results) => {
   var foundWords = [];
-  for (let index = 0; index < keywords.length; index++) {
-    const element = keywords[index];
+  for (let index = 0; index < data.interests.length; index++) {
+    const element = data.interests[index];
     if (results.description.toLowerCase().includes(element.toLowerCase()))
       foundWords.push(element);
   }
