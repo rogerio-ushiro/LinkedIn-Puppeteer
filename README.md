@@ -12,3 +12,10 @@ Developed a Puppeteer-based automation bot designed for locating job vacancies b
 
 ### Example of output pdf page:
 ![](/docs/preview.png)
+
+### Edit criteria
+The criteria for filtering job vacancies can be customized and modified within the "data.json" configuration file.
+![](/docs/json-example.png)
+
+
+
