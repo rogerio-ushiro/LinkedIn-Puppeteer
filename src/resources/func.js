@@ -1,5 +1,4 @@
 import data from '../data.json';
-console.log(data);
 
 const sortTimeago = require("./sort-timeago");
 import { createPDF } from "./create-pdf";

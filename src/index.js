@@ -24,34 +24,36 @@ const run = async () => {
   await page.waitForSelector('.jobs-search__results-list');
 
   jobVacancyList = await page.$$('.jobs-search__results-list > li');
-  console.log(jobVacancyList.length);
+  getData(index, page);
+
+  setInterval(async () => {
+    jobVacancyList = await page.$$('.jobs-search__results-list > li');
+  }, 10 * 1000);
 
   setInterval(() => {
-    getData(index, page);
     if (typeof queue[index]() === 'function')
       queue[index]()
-  }, 3000);
+  }, 3 * 1000);
 }
 
 const getData = async (i, page) => {
   queue.push(async () => {
-    jobVacancyList = await page.$$('.jobs-search__results-list > li');
-    var result = {};
+    var jobVacancy = {};
     await jobVacancyList[i].click();
     await page.waitForSelector(".top-card-layout__entity-info");
 
-    result = await getTitleInfoBlock(page, result);
-    result = await getLink(page, result);
-    result = await getLastBlock(page, result);
-    result = await getDescriptionBlock(page, result);
-    result = await getKeywords(result);
+    jobVacancy = await getTitleInfoBlock(page, jobVacancy);
+    jobVacancy = await getLink(page, jobVacancy);
+    jobVacancy = await getLastBlock(page, jobVacancy);
+    jobVacancy = await getDescriptionBlock(page, jobVacancy);
+    jobVacancy = await getKeywords(jobVacancy);
 
-    if (isValid(result, data.mustHave, data.mustNotHave)) {
-      matchFound.push(result);
+    if (isValid(jobVacancy, data)) {
+      matchFound.push(jobVacancy);
       write(matchFound);
-    } else {
-      console.log(`${i++} - ${matchFound.length} items`);
     }
+
+    console.log(`${i++} - ${matchFound.length} jobs saved`);
 
   })
 }
