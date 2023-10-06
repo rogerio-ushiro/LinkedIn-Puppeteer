@@ -1,9 +1,11 @@
 {
     "url": "https://www.linkedin.com/jobs/search/",
     "keywords": "Fullstack",
-    "location": "germany",
-    "mustHave": [],
+    "location": "italy",
+    "mustHave": ["node"],
     "mustNotHave": [],
+    "english": false,
+    "remote": false,
     "interests": [
         "node",
         "java",
