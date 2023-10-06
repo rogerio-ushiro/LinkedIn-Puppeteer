@@ -1,4 +1,4 @@
-# LinkedIn + Puppeteer (EC6) 
+# LinkedIn + Puppeteer 
 
 Developed a Puppeteer-based automation bot designed for locating job vacancies based on predefined criteria. This project is capable of generating preformatted PDF documents to facilitate the process of opportunity selection.
 
