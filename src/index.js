@@ -16,11 +16,11 @@ const queue = [];
 var index = 0;
 
 const run = async () => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 800 });
-  await page.goto(`${data.url}?keywords=${data.keywords}&location=${data.location}&refresh=true`);
+  await page.goto(`${data.url}?f_E=${data.exp_level}&keywords=${data.keywords}&location=${data.location}&refresh=true`);
   await page.waitForSelector('.jobs-search__results-list');
 
   jobVacancyList = await page.$$('.jobs-search__results-list > li');

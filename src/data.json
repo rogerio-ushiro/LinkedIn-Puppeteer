@@ -1,10 +1,13 @@
 {
     "url": "https://www.linkedin.com/jobs/search/",
     "keywords": "Fullstack",
-    "location": "italy",
-    "mustHave": ["node"],
+    "location": "portugal",
+    "mustHave": [
+        "node"
+    ],
     "mustNotHave": [],
     "english": false,
+    "exp_level": 4,
     "remote": false,
     "interests": [
         "node",
