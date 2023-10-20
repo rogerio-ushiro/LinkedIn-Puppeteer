@@ -53,6 +53,8 @@ const getTitleInfoBlock = async (page, result) => {
   result.company = company.trim();
   result.location = location.toString().split("\n")[5].trim();
   result.timeago = timeago
+    .replace(" months", "m")
+    .replace(" month", "m")
     .replace(" days", "d")
     .replace(" day", "d")
     .replace(" weeks", "w")
